@@ -6,6 +6,7 @@ const Task = ({ category }) => {
     const savedTasks = localStorage.getItem("tasks");
     return savedTasks ? JSON.parse(savedTasks) : [];
   });
+ 
 
   const [newTask, setNewTask] = useState("");
   const [priority, setPriority] = useState("");

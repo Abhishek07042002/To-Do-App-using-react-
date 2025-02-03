@@ -4,7 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Aside = ({ setCategory }) => {
   return (
-    <div className="col-2 bg-light vh-100 position-fixed top-0 pt-5 mt-5">
+    <div className="col-2 vh-100 position-fixed top-0 pt-5 mt-5">
       <div className="dropdown mt-3">
         <button
           className="btn btn-secondary dropdown-toggle mx-5 px-4"
