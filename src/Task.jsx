@@ -58,7 +58,7 @@ const Task = ({ category }) => {
   const filteredTasks = category === "All" ? tasks : tasks.filter((task) => task.category === category);
 
   return (
-    <main className="col-10 offset-2 mt-5 pt-4">
+    <main className="col-10 offset-2 mt-5 pt-4 " style={{border:"2px solid white"}}>
       <div className="p-4">
         <h2 className="mb-4">{category === "All" ? "All Tasks" : `${category} Tasks`}</h2>
 
