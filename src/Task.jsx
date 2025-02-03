@@ -71,7 +71,7 @@ const Task = () => {
                   type="text"
                   className="form-control"
                   placeholder="Add new task..."
-                  // value={newTask}
+                  value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
                 />
               </div>
