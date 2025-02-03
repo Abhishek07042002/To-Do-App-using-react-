@@ -37,3 +37,12 @@ body {
 
 .dark-mode .btn-light:hover {
   background-color: #e0e0e
+}
+
+.dark-mode {
+  border-right: 2px solid white;
+}
+
+.light-mode {
+  border-right: 2px solid black;
+}

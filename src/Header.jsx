@@ -7,7 +7,7 @@ const Header = ({ darkMode, setDarkMode }) => {
   };
 
   return (
-    <div className={`Header d-flex fixed-top ${darkMode ? "bg-dark" : "bg-secondary"}`}>
+    <div className={`Header d-flex fixed-top ${darkMode ? "bg-dark" : "bg-secondary"}`} style={{borderBlockEnd:"2px solid white"}}>
       <div className="Profile col-2 pt-3 text-start ps-3">
         <img
           className="img-fluid pb-3"
@@ -16,7 +16,7 @@ const Header = ({ darkMode, setDarkMode }) => {
           width="50px"
         />
         &nbsp; &nbsp;
-        <span className="fs-3 text-light">Hi, <span id="p-name"></span></span>
+        <span className="fs-3 text-light">Hi, User</span>
       </div>
 
       <header className="Title col-10 text-light py-3 position-relative">
@@ -25,7 +25,11 @@ const Header = ({ darkMode, setDarkMode }) => {
         {/* Toggle Dark Mode Button */}
         <button
           type="button"
-          className="btn btn-light position-absolute top-0 end-0 mt-3 me-3"
+          className={`btn btn-light position-absolute top-0 end-0 mt-3 me-3 ${
+
+            darkMode ? "btn-light": "btn-dark"
+
+          }`}
           onClick={toggleTheme}
         >
           {darkMode ? "Light Mode 🌞" : "Dark Mode 🌙"}
