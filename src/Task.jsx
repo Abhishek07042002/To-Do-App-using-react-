@@ -1,7 +1,6 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-
-const Task = () => {
+const Task = ({ category }) => {
   // State for tasks and form inputs
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -10,7 +9,7 @@ const Task = () => {
 
   const [newTask, setNewTask] = useState("");
   const [priority, setPriority] = useState("");
-  const [category, setCategory] = useState("");
+  const [taskCategory, setTaskCategory] = useState("");
 
   // Save tasks to local storage whenever tasks change
   useEffect(() => {
@@ -26,8 +25,8 @@ const Task = () => {
     const task = {
       id: Date.now(), // Simple way to generate unique id
       text: newTask,
-      priority: priority || "medium", // Default to medium if not selected
-      category: category || "general", // Default to general if not selected
+      priority: priority || "Medium", // Default to Medium if not selected
+      category: taskCategory || "General", // Default to General if not selected
       completed: false,
     };
 
@@ -37,7 +36,7 @@ const Task = () => {
     // Reset form
     setNewTask("");
     setPriority("");
-    setCategory("");
+    setTaskCategory("");
   };
 
   // Handle task deletion
@@ -54,18 +53,18 @@ const Task = () => {
     );
   };
 
+  // Filter tasks based on the selected category
+  const filteredTasks = category === "All" ? tasks : tasks.filter((task) => task.category === category);
+
   return (
-    // Main container - offset-2 pushes content right to account for sidebar
     <main className="col-10 offset-2 mt-5 pt-4">
       <div className="p-4">
-        {/* Title Section */}
-        <h2 className="mb-4">Tasks</h2>
+        <h2 className="mb-4">{category === "All" ? "All Tasks" : `${category} Tasks`}</h2>
 
-        {/* Task Input Form Card */}
+        {/* Task Input Form */}
         <div className="card shadow-sm mb-4">
           <div className="card-body">
             <form onSubmit={handleSubmit} className="row g-3">
-              {/* Task Input Field */}
               <div className="col-12 col-md-6">
                 <input
                   type="text"
@@ -82,12 +81,10 @@ const Task = () => {
                   className="form-select"
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}>
-                  <option value="" disabled>
-                    Priority
-                  </option>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
+                  <option value="" disabled>Priority</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
                 </select>
               </div>
 
@@ -95,19 +92,16 @@ const Task = () => {
               <div className="col-6 col-md-3">
                 <select
                   className="form-select"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}>
-                  <option value="" disabled>
-                    Category
-                  </option>
-                  <option value="social">Social</option>
-                  <option value="shopping">Shopping</option>
-                  <option value="savings">Savings</option>
-                  <option value="workouts">Workouts</option>
+                  value={taskCategory}
+                  onChange={(e) => setTaskCategory(e.target.value)}>
+                  <option value="" disabled>Category</option>
+                  <option value="Social">Social</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Savings">Savings</option>
+                  <option value="Workouts">Workouts</option>
                 </select>
               </div>
 
-              {/* Add Button */}
               <div className="col-12">
                 <button type="submit" className="btn btn-primary">
                   <i className="bi bi-plus-circle me-2"></i>
@@ -118,49 +112,55 @@ const Task = () => {
           </div>
         </div>
 
-        {/* Task Cards Section */}
+        {/* Task List */}
         <div className="task-list mt-4">
-          {tasks.map((task) => (
-            <div key={task.id} className="card mb-3">
-              <div className="card-body d-flex justify-content-between align-items-center">
-                {/* Left Side - Checkbox and Task Text */}
-                <div className="d-flex align-items-center">
-                  <input
-                    type="checkbox"
-                    className="form-check-input me-3"
-                    checked={task.completed}
-                    onChange={() => handleToggleComplete(task.id)}
-                  />
-                  <span
-                    style={{
-                      textDecoration: task.completed ? "line-through" : "none",
-                    }}>
-                    {task.text}
-                  </span>
-                </div>
+          {filteredTasks.length > 0 ? (
+            filteredTasks.map((task) => (
+              <div key={task.id} className="card mb-3">
+                <div className="card-body d-flex justify-content-between align-items-center">
+                  {/* Left Side - Checkbox & Task Name */}
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="checkbox"
+                      className="form-check-input me-3"
+                      checked={task.completed}
+                      onChange={() => handleToggleComplete(task.id)}
+                    />
+                    <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                      {task.text}
+                    </span>
+                  </div>
 
-                {/* Right Side - Priority, Category, and Action Buttons */}
-                <div className="d-flex align-items-center gap-3">
-                  <span
-                    className={`badge bg-${
-                      task.priority === "high"
-                        ? "danger"
-                        : task.priority === "medium"
-                        ? "warning"
-                        : "success"
+                  {/* Right Side - Priority, Category, Delete Button */}
+                  <div className="d-flex align-items-center gap-3">
+                    {/* Priority Badge */}
+                    <span
+                    className={`badge ${
+                      task.priority.toLowerCase() === "high"
+                        ? "bg-danger"
+                        : task.priority.toLowerCase() === "medium"
+                        ? "bg-warning"
+                        : "bg-success"
                     }`}>
                     {task.priority}
                   </span>
-                  <span className="badge bg-info">{task.category}</span>
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => handleDelete(task.id)}>
-                    <i className="bi bi-trash"></i>
-                  </button>
+
+                    {/* Category Badge */}
+                    <span className="badge bg-info text-dark">{task.category}</span>
+
+                    {/* Delete Button */}
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(task.id)}>
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No tasks available.</p>
+          )}
         </div>
       </div>
     </main>

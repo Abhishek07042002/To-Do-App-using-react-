@@ -14,6 +14,9 @@ const Header = () => {
           alt="Profile"
           width="50px"
         />
+        &nbsp; &nbsp;
+        <span className="fs-3">Hi, <span id="p-name"></span></span>
+        
       </div>
       <header className="Title col-10 text-light py-3 position-relative">
         <h1 className="text-center m-0">To-Do List</h1>
